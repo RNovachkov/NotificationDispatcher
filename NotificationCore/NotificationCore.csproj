@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Produce the XML documentation file so IntelliSense ships with the package.
+         NotificationCore holds the whole public contract, so this is what gives consumers docs. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <RootNamespace>NotificationCore</RootNamespace>
+    <AssemblyName>NotificationCore</AssemblyName>
+
+    <!-- NotificationCore is a provider-agnostic contract: it has no reference to APNs or FCM.
+         It is bundled into the NotificationDispatcher package, never published on its own. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>NotificationDispatcher</RootNamespace>
+    <AssemblyName>NotificationDispatcher</AssemblyName>
+  </PropertyGroup>
+
+  <!-- NuGet metadata. -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>NotificationDispatcher</PackageId>
+    <Version>10.0.0</Version>
+    <Authors>Rumen Novachkov</Authors>
+    <Product>NotificationDispatcher</Product>
+    <Title>Unified Push Notifications (APNs + FCM)</Title>
+    <Description>One unified sender over APNService (Apple/APNs) and FCMService (Android/FCM). Describe a push with a common model plus a device platform, and the dispatcher maps it to the right provider, routes by platform, and flattens both responses into one PushResult. Includes AddNotifications() dependency-injection helpers.</Description>
+    <PackageTags>notifications;push;push-notifications;apns;apple;ios;fcm;firebase;android;dependency-injection</PackageTags>
+    <Copyright>Copyright © 2026 Rumen Novachkov</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/RNovachkov/NotificationDispatcher</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/RNovachkov/NotificationDispatcher.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageIcon>NotificationDispatcher.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Assets/NotificationDispatcher.png" Pack="true" PackagePath="\" />
+    <!-- Shown on the package page; lives one directory up, alongside the solution. -->
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- For the AddNotifications() dependency-injection helper. -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageReference Include="APNService" Version="10.0.*" />
+    <PackageReference Include="FCMService" Version="10.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The provider-agnostic contract. It is IsPackable=false and has no dependencies of its
+         own, so instead of a package dependency we bundle its assembly into this package's lib
+         folder (see the IncludeNotificationCoreInPackage target below). PrivateAssets="all" keeps
+         pack from emitting a package dependency on the unpublished NotificationCore. -->
+    <ProjectReference Include="..\NotificationCore\NotificationCore.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- NotificationCore is not published on its own, so `dotnet pack` would otherwise leave
+       NotificationCore.dll out of the package and add no dependency to replace it, giving
+       consumers a package that fails to load at runtime. This folds the referenced project's
+       assembly (and its XML docs) into lib/<tfm>/ so the package is self-contained. -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeNotificationCoreInPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="IncludeNotificationCoreInPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+</Project>

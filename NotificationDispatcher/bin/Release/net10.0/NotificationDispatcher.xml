@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NotificationDispatcher</name>
+    </assembly>
+    <members>
+        <member name="T:NotificationDispatcher.NotificationBuilder">
+            <summary>
+            Collects the provider configuration for a single <c>AddNotifications</c> call. Configure the
+            platforms your app targets with <see cref="M:NotificationDispatcher.NotificationBuilder.UseApns(System.Action{APNCore.ApnsSettings})"/> and/or <see cref="M:NotificationDispatcher.NotificationBuilder.UseFcm(System.Action{FCMCore.FcmSettings})"/>; whichever you
+            set is registered, and the dispatcher routes to it automatically.
+            </summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationBuilder.UseApns(System.Action{APNCore.ApnsSettings})">
+            <summary>
+            Configures Apple Push Notification service (APNs) for <see cref="F:NotificationCore.DevicePlatform.Apple"/>
+            devices. The delegate populates the same <see cref="T:APNCore.ApnsSettings"/> that <c>AddApns</c> uses.
+            </summary>
+            <param name="configure">Populates the APNs settings (team ID, key ID, <c>.p8</c> path, default topic, …).</param>
+            <returns>The same builder, for chaining.</returns>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationBuilder.UseFcm(System.Action{FCMCore.FcmSettings})">
+            <summary>
+            Configures Firebase Cloud Messaging (FCM) for <see cref="F:NotificationCore.DevicePlatform.Android"/>
+            devices. The delegate populates the same <see cref="T:FCMCore.FcmSettings"/> that <c>AddFcm</c> uses.
+            </summary>
+            <param name="configure">Populates the FCM settings (service-account file path, project ID, …).</param>
+            <returns>The same builder, for chaining.</returns>
+        </member>
+        <member name="T:NotificationDispatcher.NotificationDispatcher">
+            <summary>
+            The umbrella notification sender. It holds an optional <see cref="T:APNCore.IApnClient"/> and
+            <see cref="T:FCMCore.IFcmClient"/> and routes each <see cref="T:NotificationCore.PushNotification"/> to the right one based on
+            its <see cref="P:NotificationCore.PushNotification.Platform"/>, translating to and from the provider models.
+            </summary>
+            <remarks>
+            <para>
+            Either provider may be absent. A notification whose platform has no configured provider resolves to
+            <see cref="M:NotificationCore.PushResult.NotConfigured(NotificationCore.DevicePlatform)"/> rather than throwing, so an app that only ships on one
+            platform can register just that provider and still call this one sender.
+            </para>
+            <para>
+            The instance is thread-safe and designed to be long-lived, like the underlying clients; register it
+            as a singleton.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationDispatcher.#ctor(APNCore.IApnClient,FCMCore.IFcmClient)">
+            <summary>
+            Creates a dispatcher over the available provider clients. Pass <see langword="null"/> for a
+            provider your app does not target.
+            </summary>
+            <param name="apnClient">The APNs client used for <see cref="F:NotificationCore.DevicePlatform.Apple"/>, or <see langword="null"/>.</param>
+            <param name="fcmClient">The FCM client used for <see cref="F:NotificationCore.DevicePlatform.Android"/>, or <see langword="null"/>.</param>
+            <exception cref="T:System.ArgumentException">When neither client is supplied.</exception>
+        </member>
+        <member name="P:NotificationDispatcher.NotificationDispatcher.SupportsApple">
+            <summary><see langword="true"/> when an APNs client is configured for Apple devices.</summary>
+        </member>
+        <member name="P:NotificationDispatcher.NotificationDispatcher.SupportsAndroid">
+            <summary><see langword="true"/> when an FCM client is configured for Android devices.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationDispatcher.Supports(NotificationCore.DevicePlatform)">
+            <summary>Returns whether a provider is configured for the given platform.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationDispatcher.SendAsync(NotificationCore.PushNotification,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:NotificationDispatcher.NotificationDispatcher.SendManyAsync(System.Collections.Generic.IReadOnlyList{NotificationCore.PushNotification},System.Int32,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:NotificationDispatcher.NotificationMapping">
+            <summary>
+            Translates the provider-agnostic <see cref="T:NotificationCore.PushNotification"/> and <see cref="T:NotificationCore.PushResult"/> types
+            to and from the APNs and FCM representations. Kept internal: the public surface is
+            <see cref="T:NotificationCore.INotificationSender"/> and its models only.
+            </summary>
+        </member>
+        <member name="F:NotificationDispatcher.NotificationMapping.AppleImageKey">
+            <summary>The custom-data key under which an Apple notification carries its image URL.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationMapping.ToApnNotification(NotificationCore.PushNotification)">
+            <summary>Builds the APNs notification for a unified push. Silent pushes become a background notification.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationMapping.ToFcmMessage(NotificationCore.PushNotification)">
+            <summary>Builds the FCM message for a unified push. Silent pushes become a data-only message.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationMapping.FromApnResponse(APNCore.ApnResponse)">
+            <summary>Maps an APNs response onto the unified result.</summary>
+        </member>
+        <member name="M:NotificationDispatcher.NotificationMapping.FromFcmResponse(FCMCore.FcmResponse)">
+            <summary>Maps an FCM response onto the unified result.</summary>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.NotificationServiceCollectionExtensions">
+            <summary>
+            Dependency-injection extensions for registering the unified notification sender.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.NotificationServiceCollectionExtensions.AddNotifications(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers an <see cref="T:NotificationCore.INotificationSender"/> that routes to whichever provider clients are
+            present in the container. Call this when you register the providers yourself (for example with
+            <c>AddApns(...)</c> and/or <c>AddFcm(...)</c>); the dispatcher resolves <see cref="T:APNCore.IApnClient"/>
+            and <see cref="T:FCMCore.IFcmClient"/> optionally, so registering only one is fine.
+            </summary>
+            <param name="services">The service collection to add to.</param>
+            <returns>The same <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>, for chaining.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.NotificationServiceCollectionExtensions.AddNotifications(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{NotificationDispatcher.NotificationBuilder})">
+            <summary>
+            Registers both the provider(s) and the unified <see cref="T:NotificationCore.INotificationSender"/> in one call.
+            Configure the platforms your app targets through the builder; each one you configure is wired up
+            (via the underlying <c>AddApns</c> / <c>AddFcm</c>) and the dispatcher routes to it automatically.
+            </summary>
+            <param name="services">The service collection to add to.</param>
+            <param name="configure">Selects and configures the providers (<c>UseApns</c>, <c>UseFcm</c>).</param>
+            <returns>The same <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>, for chaining.</returns>
+            <exception cref="T:System.ArgumentException">When the builder configured no provider.</exception>
+        </member>
+    </members>
+</doc>

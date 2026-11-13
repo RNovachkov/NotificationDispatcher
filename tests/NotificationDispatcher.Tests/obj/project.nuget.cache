@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "dgSpecHash": "hfnuu0nLB2A=",
+  "success": true,
+  "projectFilePath": "/Users/rumen/Developer/Gitea/NotificationService/Notifications/tests/NotificationDispatcher.Tests/NotificationDispatcher.Tests.csproj",
+  "expectedPackageFiles": [
+    "/Users/rumen/.nuget/packages/apnservice/10.0.1/apnservice.10.0.1.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/fcmservice/10.0.1/fcmservice.10.0.1.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.codecoverage/17.14.2/microsoft.codecoverage.17.14.2.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.extensions.configuration/10.0.0/microsoft.extensions.configuration.10.0.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.extensions.configuration.abstractions/10.0.0/microsoft.extensions.configuration.abstractions.10.0.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.extensions.configuration.binder/10.0.0/microsoft.extensions.configuration.binder.10.0.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.extensions.primitives/10.0.0/microsoft.extensions.primitives.10.0.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.net.test.sdk/17.14.2/microsoft.net.test.sdk.17.14.2.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.testplatform.objectmodel/17.14.2/microsoft.testplatform.objectmodel.17.14.2.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.testplatform.testhost/17.14.2/microsoft.testplatform.testhost.17.14.2.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit/2.9.3/xunit.2.9.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.abstractions/2.0.3/xunit.abstractions.2.0.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.analyzers/1.18.0/xunit.analyzers.1.18.0.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.assert/2.9.3/xunit.assert.2.9.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.core/2.9.3/xunit.core.2.9.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.extensibility.core/2.9.3/xunit.extensibility.core.2.9.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.extensibility.execution/2.9.3/xunit.extensibility.execution.2.9.3.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/xunit.runner.visualstudio/3.1.5/xunit.runner.visualstudio.3.1.5.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.netcore.app.ref/10.0.14/microsoft.netcore.app.ref.10.0.14.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.aspnetcore.app.ref/10.0.14/microsoft.aspnetcore.app.ref.10.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

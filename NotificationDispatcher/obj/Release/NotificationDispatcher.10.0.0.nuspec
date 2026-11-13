@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>NotificationDispatcher</id>
+    <version>10.0.0</version>
+    <title>Unified Push Notifications (APNs + FCM)</title>
+    <authors>AUTHOR_NAME</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://gitea.example.com/rumen/NotificationService</projectUrl>
+    <description>One unified sender over APNService (Apple/APNs) and FCMService (Android/FCM). Describe a push with a common model plus a device platform, and the dispatcher maps it to the right provider, routes by platform, and flattens both responses into one PushResult. Includes AddNotifications() dependency-injection helpers.</description>
+    <copyright>Copyright © 2026 AUTHOR_NAME</copyright>
+    <tags>notifications push push-notifications apns apple ios fcm firebase android dependency-injection</tags>
+    <repository type="git" url="https://gitea.example.com/rumen/NotificationService.git" />
+    <dependencies>
+      <group targetFramework="net10.0">
+        <dependency id="APNService" version="10.0.1" exclude="Build,Analyzers" />
+        <dependency id="FCMService" version="10.0.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="10.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.dll" target="lib/net10.0/NotificationCore.dll" />
+    <file src="/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.xml" target="lib/net10.0/NotificationCore.xml" />
+    <file src="/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationDispatcher/bin/Release/net10.0/NotificationDispatcher.dll" target="lib/net10.0/NotificationDispatcher.dll" />
+    <file src="/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationDispatcher/bin/Release/net10.0/NotificationDispatcher.xml" target="lib/net10.0/NotificationDispatcher.xml" />
+    <file src="/Users/rumen/Developer/Gitea/NotificationService/Notifications/README.md" target="/README.md" />
+  </files>
+</package>

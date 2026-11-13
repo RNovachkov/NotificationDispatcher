@@ -1,0 +1,14 @@
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.deps.json
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.dll
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.pdb
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/bin/Release/net10.0/NotificationCore.xml
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.GeneratedMSBuildEditorConfig.editorconfig
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.AssemblyInfoInputs.cache
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.AssemblyInfo.cs
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.csproj.CoreCompileInputs.cache
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.dll
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/refint/NotificationCore.dll
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.xml
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/NotificationCore.pdb
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/ref/NotificationCore.dll
+/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/obj/Release/net10.0/Notifica.C1F63501.Up2Date

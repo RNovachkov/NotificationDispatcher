@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "MlPFFxSJD7c=",
+  "success": true,
+  "projectFilePath": "/Users/rumen/Developer/Gitea/NotificationService/Notifications/NotificationCore/NotificationCore.csproj",
+  "expectedPackageFiles": [
+    "/Users/rumen/.nuget/packages/microsoft.netcore.app.ref/10.0.14/microsoft.netcore.app.ref.10.0.14.nupkg.sha512",
+    "/Users/rumen/.nuget/packages/microsoft.aspnetcore.app.ref/10.0.14/microsoft.aspnetcore.app.ref.10.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

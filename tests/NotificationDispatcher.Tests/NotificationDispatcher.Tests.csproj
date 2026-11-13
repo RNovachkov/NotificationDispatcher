@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The system under test. It brings in the APNCore / FCMCore provider contracts the fakes
+         implement via its (transitive) package references. -->
+    <ProjectReference Include="..\..\NotificationDispatcher\NotificationDispatcher.csproj" />
+    <!-- NotificationDispatcher references NotificationCore with PrivateAssets="all" (it bundles the
+         assembly into its NuGet package rather than exposing a dependency), so the contract types are
+         not flowed transitively. Reference it directly for the tests. -->
+    <ProjectReference Include="..\..\NotificationCore\NotificationCore.csproj" />
+  </ItemGroup>
+
+</Project>

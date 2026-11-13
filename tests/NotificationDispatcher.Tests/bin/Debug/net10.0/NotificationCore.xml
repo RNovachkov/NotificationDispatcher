@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NotificationCore</name>
+    </assembly>
+    <members>
+        <member name="T:NotificationCore.DevicePlatform">
+            <summary>
+            The kind of device a notification targets. The dispatcher uses this to pick the underlying
+            provider: <see cref="F:NotificationCore.DevicePlatform.Apple"/> notifications go through Apple Push Notification service (APNs) and
+            <see cref="F:NotificationCore.DevicePlatform.Android"/> notifications go through Firebase Cloud Messaging (FCM).
+            </summary>
+        </member>
+        <member name="F:NotificationCore.DevicePlatform.Apple">
+            <summary>
+            An Apple device (iPhone, iPad, Mac, Apple Watch or Apple TV). Delivered through APNs using the
+            registered <c>IApnClient</c>.
+            </summary>
+        </member>
+        <member name="F:NotificationCore.DevicePlatform.Android">
+            <summary>
+            An Android device. Delivered through FCM using the registered <c>IFcmClient</c>.
+            </summary>
+        </member>
+        <member name="T:NotificationCore.INotificationSender">
+            <summary>
+            Sends provider-agnostic <see cref="T:NotificationCore.PushNotification"/>s, routing each to Apple Push Notification
+            service (APNs) or Firebase Cloud Messaging (FCM) based on its <see cref="P:NotificationCore.PushNotification.Platform"/>.
+            This is the single entry point consumers depend on; the concrete dispatcher picks whichever
+            provider(s) are configured.
+            </summary>
+        </member>
+        <member name="M:NotificationCore.INotificationSender.SendAsync(NotificationCore.PushNotification,System.Threading.CancellationToken)">
+            <summary>
+            Sends a single notification and returns the result. This does not throw for provider-level
+            rejections (invalid token, unconfigured provider, etc.); inspect <see cref="P:NotificationCore.PushResult.IsSuccess"/>
+            or call <see cref="M:NotificationCore.PushResult.EnsureSuccess"/>.
+            </summary>
+            <param name="notification">The notification to deliver.</param>
+            <param name="cancellationToken">A token to cancel the request.</param>
+        </member>
+        <member name="M:NotificationCore.INotificationSender.SendManyAsync(System.Collections.Generic.IReadOnlyList{NotificationCore.PushNotification},System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Sends many notifications concurrently (across both providers as needed), returning a result for
+            each in the same order as the input. Failures are reported per-notification rather than throwing.
+            </summary>
+            <param name="notifications">The notifications to deliver.</param>
+            <param name="maxConcurrency">The maximum number of in-flight requests. Defaults to 10.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
+        </member>
+        <member name="T:NotificationCore.NotificationException">
+            <summary>
+            Thrown when a provider rejects a notification and the caller requested that failures throw (for
+            example via <see cref="M:NotificationCore.PushResult.EnsureSuccess"/>).
+            </summary>
+        </member>
+        <member name="M:NotificationCore.NotificationException.#ctor(NotificationCore.PushResult)">
+            <summary>Creates the exception from a failed <see cref="T:NotificationCore.PushResult"/>.</summary>
+        </member>
+        <member name="P:NotificationCore.NotificationException.Result">
+            <summary>The failed result returned by the dispatcher.</summary>
+        </member>
+        <member name="T:NotificationCore.PushNotification">
+            <summary>
+            A single, provider-agnostic notification: the target device, the user-facing content and an
+            optional data payload. The dispatcher translates this into the APNs or FCM representation based on
+            <see cref="P:NotificationCore.PushNotification.Platform"/>.
+            </summary>
+            <remarks>
+            Only the common fields that both APNs and FCM understand are exposed here. When <see cref="P:NotificationCore.PushNotification.Title"/>
+            and <see cref="P:NotificationCore.PushNotification.Body"/> are both omitted the notification is treated as a silent, data-only
+            delivery (an APNs background push, or an FCM data message) so the receiving app handles it in the
+            background. Prefer the static factory helpers (<see cref="M:NotificationCore.PushNotification.Apple(System.String,System.String,System.String)"/>, <see cref="M:NotificationCore.PushNotification.Android(System.String,System.String,System.String)"/>,
+            <see cref="M:NotificationCore.PushNotification.Alert(NotificationCore.DevicePlatform,System.String,System.String,System.String)"/>) for the common cases.
+            </remarks>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Platform">
+            <summary>The platform of the target device, which selects the provider. Required.</summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.DeviceToken">
+            <summary>
+            The device registration token: the APNs device token for <see cref="F:NotificationCore.DevicePlatform.Apple"/>,
+            or the FCM registration token for <see cref="F:NotificationCore.DevicePlatform.Android"/>. Required.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Title">
+            <summary>The notification title shown to the user. Omit (together with <see cref="P:NotificationCore.PushNotification.Body"/>) for a silent push.</summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Body">
+            <summary>The notification body shown to the user. Omit (together with <see cref="P:NotificationCore.PushNotification.Title"/>) for a silent push.</summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.ImageUrl">
+            <summary>
+            The URL of an image to display with the notification. On Android this maps to the FCM
+            notification image; on Apple it is delivered as custom data (<c>image_url</c>) and the push is
+            marked mutable so a Notification Service Extension can attach it.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Badge">
+            <summary>
+            The number to show on the app icon badge (Apple only). <c>0</c> clears the badge. Ignored for
+            <see cref="F:NotificationCore.DevicePlatform.Android"/>, where the badge is managed by the app.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Sound">
+            <summary>
+            The sound to play: a sound file name in the app, or <c>"default"</c> for the system sound.
+            Applied to the APNs <c>sound</c> field and the FCM Android notification sound.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.Data">
+            <summary>
+            Arbitrary string key/value data delivered to the app alongside (or instead of) the visible
+            notification. Both providers require string values.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.CollapseId">
+            <summary>
+            An identifier used to collapse related notifications so only the most recent is shown. Maps to
+            the APNs <c>apns-collapse-id</c> header and the FCM Android <c>collapse_key</c>.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.ApnsTopic">
+            <summary>
+            An optional override for the APNs <c>apns-topic</c> (usually the app's bundle ID). Apple only;
+            when <see langword="null"/> the <c>IApnClient</c>'s configured default topic is used. Ignored
+            for Android.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushNotification.IsSilent">
+            <summary><see langword="true"/> when neither <see cref="P:NotificationCore.PushNotification.Title"/> nor <see cref="P:NotificationCore.PushNotification.Body"/> is set, i.e. a silent, data-only push.</summary>
+        </member>
+        <member name="M:NotificationCore.PushNotification.Alert(NotificationCore.DevicePlatform,System.String,System.String,System.String)">
+            <summary>Creates a user-facing alert for the given platform and device token.</summary>
+        </member>
+        <member name="M:NotificationCore.PushNotification.Apple(System.String,System.String,System.String)">
+            <summary>Creates a user-facing alert for an Apple device.</summary>
+        </member>
+        <member name="M:NotificationCore.PushNotification.Android(System.String,System.String,System.String)">
+            <summary>Creates a user-facing alert for an Android device.</summary>
+        </member>
+        <member name="M:NotificationCore.PushNotification.DataOnly(NotificationCore.DevicePlatform,System.String,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>Creates a silent, data-only push for the given platform (APNs background / FCM data message).</summary>
+        </member>
+        <member name="T:NotificationCore.PushResult">
+            <summary>
+            The provider-agnostic result of attempting to send a <see cref="T:NotificationCore.PushNotification"/>. It flattens
+            the APNs and FCM responses into one shape so callers do not need to branch on the platform.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.IsSuccess">
+            <summary><see langword="true"/> when the provider accepted the notification.</summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.Platform">
+            <summary>The platform the notification was sent to.</summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.StatusCode">
+            <summary>
+            The HTTP status code returned by the provider, or <see langword="null"/> when the notification
+            never reached a provider (for example <see cref="M:NotificationCore.PushResult.NotConfigured(NotificationCore.DevicePlatform)"/>).
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.MessageId">
+            <summary>
+            On success, the provider's identifier for the message: the APNs <c>apns-id</c>, or the FCM
+            message name (<c>projects/{id}/messages/{id}</c>). <see langword="null"/> on failure.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.ErrorCode">
+            <summary>
+            On failure, the provider's machine-readable error code: the APNs <c>reason</c> (for example
+            <c>BadDeviceToken</c>), or the FCM error code / status (for example <c>UNREGISTERED</c>).
+            <see langword="null"/> on success.
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.ErrorMessage">
+            <summary>On failure, a human-readable description of what went wrong. <see langword="null"/> on success.</summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.ShouldRemoveToken">
+            <summary>
+            <see langword="true"/> when the provider reported that the device token is permanently invalid
+            and should be removed from your database (unrolls the provider's own <c>ShouldRemoveToken</c>).
+            </summary>
+        </member>
+        <member name="P:NotificationCore.PushResult.ProviderResponse">
+            <summary>
+            The underlying provider response (<c>ApnResponse</c> or <c>FcmResponse</c>) when one was
+            produced, for callers that need provider-specific detail. <see langword="null"/> when no
+            provider was invoked.
+            </summary>
+        </member>
+        <member name="M:NotificationCore.PushResult.NotConfigured(NotificationCore.DevicePlatform)">
+            <summary>
+            Creates the result returned when a notification targets a platform whose provider is not
+            registered (for example an Android push when only APNs was configured). It is not a success and
+            carries no status code.
+            </summary>
+            <param name="platform">The platform that had no configured provider.</param>
+        </member>
+        <member name="M:NotificationCore.PushResult.EnsureSuccess">
+            <summary>Throws a <see cref="T:NotificationCore.NotificationException"/> when <see cref="P:NotificationCore.PushResult.IsSuccess"/> is <see langword="false"/>.</summary>
+        </member>
+    </members>
+</doc>
