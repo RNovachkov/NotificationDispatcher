@@ -142,3 +142,7 @@ Both projects target `net10.0`. `NotificationDispatcher` references `Notificatio
 provider packages (`APNService`, `FCMService`). `NotificationCore` is a provider-agnostic contract
 that is not published on its own — its assembly is bundled into the `NotificationDispatcher` package,
 and `APNService` / `FCMService` are carried as package dependencies.
+
+## License
+
+Licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
