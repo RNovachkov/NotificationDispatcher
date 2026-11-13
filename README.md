@@ -2,8 +2,6 @@
 
 # Notification Dispatcher
 
-# Unified Notifications
-
 One umbrella over the `APNService` (Apple / APNs) and `FCMService`
 (Android / FCM) NuGet packages. Describe a notification with a handful of
 common parameters plus a **device platform**, and the dispatcher picks the right underlying provider
