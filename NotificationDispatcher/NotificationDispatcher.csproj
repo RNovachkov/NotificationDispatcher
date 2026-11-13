@@ -15,7 +15,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>NotificationDispatcher</PackageId>
-    <Version>10.0.0</Version>
+    <Version>10.0.1</Version>
     <Authors>Rumen Novachkov</Authors>
     <Product>NotificationDispatcher</Product>
     <Title>Unified Push Notifications (APNs + FCM)</Title>
