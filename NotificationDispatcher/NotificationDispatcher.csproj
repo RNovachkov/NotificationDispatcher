@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -15,7 +15,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>NotificationDispatcher</PackageId>
-    <Version>10.0.1</Version>
+    <Version>11.0.0</Version>
     <Authors>Rumen Novachkov</Authors>
     <Product>NotificationDispatcher</Product>
     <Title>Unified Push Notifications (APNs + FCM)</Title>
@@ -41,9 +41,8 @@
 
   <ItemGroup>
     <!-- For the AddNotifications() dependency-injection helper. -->
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-    <PackageReference Include="APNService" Version="10.0.*" />
-    <PackageReference Include="FCMService" Version="10.0.*" />
+    <PackageReference Include="APNService" Version="11.*" />
+    <PackageReference Include="FCMService" Version="11.*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,7 +67,7 @@
 
   <Target Name="IncludeNotificationCoreInPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
 
