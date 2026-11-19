@@ -13,7 +13,7 @@ common parameters plus a **device platform**, and the dispatcher picks the right
 dotnet add package NotificationDispatcher
 ```
 
-Targets `net10.0`. The `APNService` and `FCMService` providers come in as package
+Targets `net11.0`. The `APNService` and `FCMService` providers come in as package
 dependencies, so you only need this one package.
 
 Two projects, mirroring the `*Core` + `*Service` split the provider libraries already use:
@@ -138,7 +138,7 @@ dotnet build Notifications/NotificationDispatcher/NotificationDispatcher.csproj
 dotnet pack Notifications/NotificationDispatcher/NotificationDispatcher.csproj -c Release
 ```
 
-Both projects target `net10.0`. `NotificationDispatcher` references `NotificationCore` plus the two
+Both projects target `net11.0`. `NotificationDispatcher` references `NotificationCore` plus the two
 provider packages (`APNService`, `FCMService`). `NotificationCore` is a provider-agnostic contract
 that is not published on its own — its assembly is bundled into the `NotificationDispatcher` package,
 and `APNService` / `FCMService` are carried as package dependencies.
